@@ -1,32 +1,62 @@
-import React, { useState } from 'react';
-import FluxoCidadao from './pages/Cidadao/FluxoCidadao';
-import PainelGestor from './pages/Gestor/PainelGestor';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import AvisoAtualizacao from './components/AvisoAtualizacao';
+import RequerLogin from './components/RequerLogin';
+import Inicio from './pages/Inicio';
+import CidadaoLayout from './pages/cidadao/CidadaoLayout';
+import DetalheDenuncia from './pages/cidadao/DetalheDenuncia';
+import Login from './pages/cidadao/Login';
+import MeuMapa from './pages/cidadao/MeuMapa';
+import MinhasDenuncias from './pages/cidadao/MinhasDenuncias';
+import NovaDenuncia from './pages/cidadao/NovaDenuncia';
+import Registro from './pages/cidadao/Registro';
+import Dashboard from './pages/gestor/Dashboard';
+import GestorLayout from './pages/gestor/GestorLayout';
+import GestorLogin from './pages/gestor/GestorLogin';
+import MapaCalor from './pages/gestor/MapaCalor';
+import Ocorrencias from './pages/gestor/Ocorrencias';
+import { appNativo } from './utils/appNativo';
+
+const INICIO_DO_APP = { cidadao: '/app', gestor: '/gestao' }[appNativo?.perfil];
 
 export default function App() {
-  // Controle para saber qual visão mostrar
-  const [visaoAtual, setVisaoAtual] = useState('cidadao');
-
   return (
-    <div>
-      {/* Barra superior provisória só para facilitar os seus testes */}
-      <div style={{ backgroundColor: '#cbd5e1', padding: '10px', textAlign: 'center' }}>
-        <span style={{ fontWeight: 'bold', marginRight: '15px' }}>Testar ambiente:</span>
-        <button 
-          onClick={() => setVisaoAtual('cidadao')} 
-          style={{ padding: '8px 16px', marginRight: '10px', cursor: 'pointer', fontWeight: visaoAtual === 'cidadao' ? 'bold' : 'normal' }}
-        >
-          📱 Cidadão
-        </button>
-        <button 
-          onClick={() => setVisaoAtual('gestor')} 
-          style={{ padding: '8px 16px', cursor: 'pointer', fontWeight: visaoAtual === 'gestor' ? 'bold' : 'normal' }}
-        >
-          💻 Gestor Público
-        </button>
-      </div>
+    <>
+      <AvisoAtualizacao />
+      <Routes>
+        <Route path="/" element={INICIO_DO_APP ? <Navigate to={INICIO_DO_APP} replace /> : <Inicio />} />
 
-      {/* Mostra o componente Cidadão ou Gestor dependendo do botão clicado */}
-      {visaoAtual === 'cidadao' ? <FluxoCidadao /> : <PainelGestor />}
-    </div>
+        <Route path="/app/login" element={<Login />} />
+        <Route path="/app/registro" element={<Registro />} />
+        <Route
+          path="/app"
+          element={
+            <RequerLogin perfil="cidadao">
+              <CidadaoLayout />
+            </RequerLogin>
+          }
+        >
+          <Route index element={<MinhasDenuncias />} />
+          <Route path="nova" element={<NovaDenuncia />} />
+          <Route path="denuncia/:id" element={<DetalheDenuncia />} />
+          <Route path="mapa" element={<MeuMapa />} />
+        </Route>
+
+        <Route path="/gestao/login" element={<GestorLogin />} />
+        <Route
+          path="/gestao"
+          element={
+            <RequerLogin perfil="gestor">
+              <GestorLayout />
+            </RequerLogin>
+          }
+        >
+          <Route index element={<Dashboard />} />
+          <Route path="ocorrencias" element={<Ocorrencias />} />
+          <Route path="mapa" element={<MapaCalor />} />
+        </Route>
+
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </>
   );
 }
