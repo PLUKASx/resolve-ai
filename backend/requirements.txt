@@ -1,0 +1,15 @@
+fastapi>=0.115
+uvicorn[standard]>=0.32
+sqlalchemy>=2.0.36
+pydantic>=2.9
+bcrypt>=4.2
+pyjwt>=2.9
+python-multipart>=0.0.12
+python-dotenv>=1.0
+# Fuso horário de Brasília (o Windows não traz a base de fusos do Python)
+tzdata>=2024.1
+# MySQL/MariaDB (banco do painel Pterodactyl): DATABASE_URL=mysql+pymysql://...
+pymysql>=1.1
+cryptography>=43
+# Para usar PostgreSQL/PostGIS em vez do SQLite, instale também:
+# psycopg[binary]>=3.2

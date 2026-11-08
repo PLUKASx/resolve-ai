@@ -1,0 +1,15 @@
+{
+  "name": "resolve-ai-mobile",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "@capacitor/android": "8.4.3",
+    "@capacitor/app": "8.1.2",
+    "@capacitor/browser": "8.0.4",
+    "@capacitor/cli": "8.4.3",
+    "@capacitor/core": "8.4.3",
+    "@capacitor/geolocation": "8.2.4",
+    "capacitor-native-settings": "8.2.0"
+  }
+}
